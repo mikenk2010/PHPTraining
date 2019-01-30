@@ -35,17 +35,14 @@ class Rest_User extends REST_Controller
         $id = $this->get('id');
         // If the id parameter doesn't exist return all the users
 
-        if ($id === NULL) {
+        if ($id == NULL) {
             // Check if the users data store contains users (in case the database result returns NULL)
             if ($users) {
                 // Set the response and exit
-                $this->response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+                $this->response(['id'=>'cant found'], REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
             } else {
                 // Set the response and exit
-                $this->response([
-                    'status' => FALSE,
-                    'message' => 'No users were found'
-                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+                $this->response(null, REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
             }
         }
 
@@ -75,7 +72,7 @@ class Rest_User extends REST_Controller
         if (! empty($user)) {
             $this->set_response($user, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
         } else {
-            $this->set_response($users, REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+            $this->set_response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
         }
     }
 
