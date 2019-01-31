@@ -1,5 +1,7 @@
 <?php
+
 use Restserver\Libraries\REST_Controller;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 require APPPATH . 'libraries/REST_Controller.php';
@@ -19,7 +21,7 @@ class Rest_User extends REST_Controller
     {
         $Data = $this->User_model->getUser();
         $users = array();
-        for ($i = 1; $i < count($Data); $i ++) {
+        for ($i = 1; $i < count($Data); $i++) {
             $users[] = [
                 'id' => $i,
                 'FirstName' => $Data[$i]['FirstName'],
@@ -39,7 +41,7 @@ class Rest_User extends REST_Controller
             // Check if the users data store contains users (in case the database result returns NULL)
             if ($users) {
                 // Set the response and exit
-                $this->response(['id'=>'cant found'], REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+                $this->response(['id' => 'cant found'], REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
             } else {
                 // Set the response and exit
                 $this->response(null, REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
@@ -48,7 +50,7 @@ class Rest_User extends REST_Controller
 
         // Find and return a single record for a particular user.
 
-        $id = (int) $id;
+        $id = (int)$id;
 
         // Validate the id.
         if ($id <= 0) {
@@ -61,7 +63,7 @@ class Rest_User extends REST_Controller
 
         $user = NULL;
 
-        if (! empty($users)) {
+        if (!empty($users)) {
             foreach ($users as $key => $value) {
                 if (isset($value['id']) && $value['id'] === $id) {
                     $user = $value;
@@ -69,7 +71,7 @@ class Rest_User extends REST_Controller
             }
         }
 
-        if (! empty($user)) {
+        if (!empty($user)) {
             $this->set_response($user, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
         } else {
             $this->set_response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
@@ -121,8 +123,48 @@ class Rest_User extends REST_Controller
             ), REST_Controller::HTTP_BAD_REQUEST);
     }
 
-    public function users_put() {
-        $User=array();
+    public function users_put()
+    {
+        $config['upload_path'] = 'uploads/';
+        $config['allowed_types'] = 'gif|jpg|png';
+        $this->load->library('upload',$config);
+        $this->upload->do_upload("avatar");
+        $Check=$this->upload->data();
+        $Name=$Check['file_name'];
+        $User = array();
+        $FirstName = $this->put('first');
+        $LastName = $this->put('last');
+        $Gender = $this->put('gender');
+        $Address = $this->put('Address');
+        $Day = $this->put('day');
+        $Month = $this->put('month');
+        $Year = $this->put('year');
+        $Str="$Year-$Month-$Day";
+        $Dob=date_create_from_format('Y-m-d', $Str);
+        $CreateDate = date('Y-m-d H:i:s');
+        $Status=$this->put('status');
+
+        $User=[
+                'FirstName' => $FirstName,
+            'LastName' => $LastName,
+            'Gender' => $Gender,
+            'Address' => $Address,
+            'DoB' => '2000-11-11',
+            'Avatar' => "upload/$Name",
+            'Status' => $Status,
+            'CreateDate' => $CreateDate
+        ];
+        $Flag=$this->User_model->insertUser($User);
+        if($Flag==TRUE)
+        {
+            $this->response($User,200);
+        }
+        else
+        {
+            $this->response([
+                'mess'=>'fail'
+            ],REST_Controller::HTTP_BAD_REQUEST);
+        }
     }
 }
 
