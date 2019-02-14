@@ -46,14 +46,15 @@
             cursor: pointer;
         }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script rel="javascript" type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 <button type='button' id='show'>ajax load</button>
 <div id="List"></div>
 <h2>Thêm user</h2>
 
-<!-- Trigger/Open The Modal -->
+<!-- button thêm -->
 <button id="myBtn">Thêm</button>
 
 <!-- The Modal -->
@@ -124,6 +125,47 @@
     }
 </script> <!-- Popup Form -->
 <script>
+    // insert user
+    $('form.insertform').on('submit', function () {
+        var that = $(this),
+            data = {};
+
+        that.find('[name]').each(function (index, value) {
+            var that = $(this),
+                name = that.attr('name'),
+                value = that.val();
+            data[name] = value;
+        });
+        $.ajax({
+            url: 'http://localhost/exBaitap4/index.php/Rest_User/Users',
+            type: 'PUT',
+            data: data,
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    });
+</script><!-- Insert User -->
+<script>
+    //Delete user
+    function deleteUser(First, Last) {
+        $.ajax({
+            url: 'http://localhost/exBaitap4/index.php/Rest_User/Users?' + $.param({
+                FirstName: First,
+                LastName: Last
+            }),
+            type: 'DELETE',
+            data: {
+                'FirstName': First,
+                'LastName': Last
+            },
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    }
+</script><!-- Delete User -->
+<script>
     $(document).ready(function () {
         $("#show").click(function () {
             $.get("http://localhost/exBaitap4/index.php/Rest_User/Users", function (result) {
@@ -147,7 +189,7 @@
                         '<td>' + result[i].Address + '</td>' +
                         '<td>' + result[i].CreateDate + '</td>' +
                         '<td><button type=\'button\' id=\'cap nhat\'>cap nhat</button></td>' +
-                        '<td><button type=\'button\' id=\'xoa\'>xoa</button></td>' +
+                        '<td><button type=\'button\' onclick="+deleteUser(\'' + result[i].FirstName + '\',\'' + result[i].LastName + '\')">xoa</button></td>' +
                         '</tr>';
                 }
                 str += '</table>';
@@ -156,28 +198,7 @@
         });
     });
 </script> <!-- Load List-->
-<script>
-    // insert user
-    $('form.insertform').on('submit', function () {
-        var that = $(this),
-            data = {};
 
-        that.find('[name]').each(function (index, value) {
-            var that = $(this),
-                name = that.attr('name'),
-                value = that.val();
-            data[name] = value;
-        });
-        $.ajax({
-            url: 'http://localhost/exBaitap4/index.php/Rest_User/Users',
-            type: 'PUT',
-            data: data,
-            success: function (result) {
-                console.log(result);
-            }
-        });
-    });
-</script><!-- Insert User-->
 </body>
 
 </html>

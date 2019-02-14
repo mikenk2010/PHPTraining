@@ -81,7 +81,6 @@ class Rest_User extends REST_Controller
     public function users_delete()
     {
         $First = $this->query('FirstName');
-
         $Last = $this->query('LastName');
         $Flag = $this->User_model->deleteUser($First, $Last);
         if ($Flag == TRUE) {
@@ -127,10 +126,10 @@ class Rest_User extends REST_Controller
     {
         $config['upload_path'] = 'uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
-        $this->load->library('upload',$config);
+        $this->load->library('upload', $config);
         $this->upload->do_upload("avatar");
-        $Check=$this->upload->data();
-        $Name=$Check['file_name'];
+        $Check = $this->upload->data();
+        $Name = $Check['file_name'];
         $User = array();
         $FirstName = $this->put('first');
         $LastName = $this->put('last');
@@ -139,13 +138,13 @@ class Rest_User extends REST_Controller
         $Day = $this->put('day');
         $Month = $this->put('month');
         $Year = $this->put('year');
-        $Str="$Year-$Month-$Day";
-        $Dob=date_create_from_format('Y-m-d', $Str);
+        $Str = "$Year-$Month-$Day";
+        $Dob = date_create_from_format('Y-m-d', $Str);
         $CreateDate = date('Y-m-d H:i:s');
-        $Status=$this->put('status');
+        $Status = $this->put('status');
 
-        $User=[
-                'FirstName' => $FirstName,
+        $User = [
+            'FirstName' => $FirstName,
             'LastName' => $LastName,
             'Gender' => $Gender,
             'Address' => $Address,
@@ -154,16 +153,13 @@ class Rest_User extends REST_Controller
             'Status' => $Status,
             'CreateDate' => $CreateDate
         ];
-        $Flag=$this->User_model->insertUser($User);
-        if($Flag==TRUE)
-        {
-            $this->response($User,200);
-        }
-        else
-        {
+        $Flag = $this->User_model->insertUser($User);
+        if ($Flag == TRUE) {
+            $this->response($User, 200);
+        } else {
             $this->response([
-                'mess'=>'fail'
-            ],REST_Controller::HTTP_BAD_REQUEST);
+                'mess' => 'fail'
+            ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
 }
