@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>Great Codeigniter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script rel="javascript" type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -22,9 +25,23 @@
             background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
         }
 
+        .modal_update {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
         /* Modal Content */
         .modal-content {
-            background-color: #fefefe;
+            background-color: #ffffff;
             margin: auto;
             padding: 20px;
             border: 1px solid #888;
@@ -46,15 +63,13 @@
             cursor: pointer;
         }
     </style>
-    <script rel="javascript" type="text/javascript"
-            src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <body>
 <button type='button' id='show'>ajax load</button>
 <div id="List"></div>
-<h2>Thêm user</h2>
 
-<!-- button thêm -->
+Thêm user
 <button id="myBtn">Thêm</button>
 
 <!-- The Modal -->
@@ -95,17 +110,52 @@
                 ?>
             </select><br>
             <input type="submit" value="Thêm">
+        </form>
     </div>
 </div>
+<h1>Cập nhật User</h1>
+<form method="post" enctype="multipart/form-data" class="UpdateForm">
+    First Name: <input type="text" name="first" id="first"><br>
+    Last Name: <input type="text" name="last" id="last"><br>
+    Gender : <input type="radio" name="gender" value="1"> Male
+    <input type="radio" name="gender" value="0"> Female<br>
+    Status : <input type="radio" name="status" value="1"> active
+    <input type="radio" name="status" value="0"> inactive<br>
+    Address :<textarea rows="3" cols="40" name="Address" value=''>
+            </textarea><br>
+    Avatar : <input type="file" name="avatar" value='avatar Cua ban'><br>
+    Date of Birth:
+    <select name="day">
+        <?php
+        for ($j = 1; $j <= 31; $j++)
+            echo " <option value='$j'>$j</option>";
+        ?>
+    </select>
+
+    <select name='month'>
+        <?php
+        for ($j = 1; $j <= 12; $j++)
+            echo " <option value='$j'>$j</option>";
+        ?>
+    </select>
+
+    <select name='year'>
+        <?php
+        for ($j = 1940; $j <= 2015; $j++)
+            echo " <option value='$j'>$j</option>";
+        ?>
+    </select><br>
+    <input type="submit" value="Cập nhật">
+</form>
 <script>
     // Get the modal
     var modal = document.getElementById('myModal');
 
     // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
+    var btn = document.getElementById('myBtn');
 
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+    var span = document.getElementsByClassName('close')[0];
 
     // When the user clicks the button, open the modal
     btn.onclick = function () {
@@ -123,6 +173,7 @@
             modal.style.display = "none";
         }
     }
+
 </script> <!-- Popup Form -->
 <script>
     // insert user
@@ -166,6 +217,33 @@
     }
 </script><!-- Delete User -->
 <script>
+    function getData(First, Last) {
+        document.getElementById('first').value = First;
+        document.getElementById('last').value = Last;
+    }
+
+    $('form.UpdateForm').on('submit', function () {
+        var that = $(this),
+            data = {};
+
+        that.find('[name]').each(function (index, value) {
+            var that = $(this),
+                name = that.attr('name'),
+                value = that.val();
+            data[name] = value;
+        });
+        $.ajax({
+            url: 'http://localhost/exBaitap4/index.php/Rest_User/Users',
+            type: 'POST',
+            data: data,
+            success: function (result) {
+                console.log(result);
+            }
+        });
+        return false;
+    });
+</script><!-- Update User -->
+<script>
     $(document).ready(function () {
         $("#show").click(function () {
             $.get("http://localhost/exBaitap4/index.php/Rest_User/Users", function (result) {
@@ -188,7 +266,7 @@
                         '<td>' + result[i].DoB + '</td>' +
                         '<td>' + result[i].Address + '</td>' +
                         '<td>' + result[i].CreateDate + '</td>' +
-                        '<td><button type=\'button\' id=\'cap nhat\'>cap nhat</button></td>' +
+                        '<td><button type=\'button\' id=\'cap nhat\' onclick="getData(\'' + result[i].FirstName + '\',\'' + result[i].LastName + '\')">cap nhat</button></td>' +
                         '<td><button type=\'button\' onclick="+deleteUser(\'' + result[i].FirstName + '\',\'' + result[i].LastName + '\')">xoa</button></td>' +
                         '</tr>';
                 }

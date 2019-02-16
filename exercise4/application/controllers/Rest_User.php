@@ -98,23 +98,27 @@ class Rest_User extends REST_Controller
     public function users_post()
     {
         $Data = array();
-        $Last = $this->post('LastName');
-        $First = $this->post('FirstName');
-        $Gender = $this->post('Gender');
+        $Last = $this->post('last');
+        $First = $this->post('first');
+        $Gender = $this->post('gender');
         $Address = $this->post('Address');
-        $Str = $this->post('DoB');
-        $Date = date_create_from_format('Y-m-d', $Str);
+        $Day = $this->post('day');
+        $Month = $this->post('month');
+        $Year = $this->post('year');
+        $Str = "$Year-$Month-$Day";
+        $Dob = date_create_from_format('Y-m-d', $Str);
         $Status = $this->post('Status');
         $Data = [
             'Gender' => $Gender,
             'Address' => $Address,
-            'DoB' => $Date->format('Y-m-d'),
+            'DoB' => $Dob->format('Y-m-d'),
             'Status' => $Status
         ];
         $Flag = $this->User_model->updateUser($First, $Last, $Data);
         if ($Flag == TRUE)
             $this->response(array(
-                'mess' => $Last
+                'LastName' => $Last,
+                'FirstName' => $First
             ), REST_Controller::HTTP_OK);
         else
             $this->response(array(
@@ -148,7 +152,7 @@ class Rest_User extends REST_Controller
             'LastName' => $LastName,
             'Gender' => $Gender,
             'Address' => $Address,
-            'DoB' => '2000-11-11',
+            'DoB' => $Dob->format('Y-m-d'),
             'Avatar' => "upload/$Name",
             'Status' => $Status,
             'CreateDate' => $CreateDate
