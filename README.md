@@ -55,5 +55,31 @@ Có Blur background để các action thay đổi ở page index.
 ## Bài tập 7: 
 - Deploy project lên AWS, để a tạo cho e account, rồi ssh key, rồi e access và upload project của mình lên đó
 
-## Bài 8: 
+## Bài tập 8: 
 - Kết nối tới mongoDB, khi tạo một record mysql ở bảng Employee, thì lưu thông tin của Employee đó xuống MongoDB đồng tới cập nhật Mysql với MongoDB Key mới tạo
+
+## Bài tập 9: 
+- Xây dụng một website instagram, project name: Khoiinsta
+-- Login 
+-- Sign up
+-- Add/edit/delete/view user
+-- Add/edit/delete/view user role
+-- Add/edit/delete/view article
+--- Admin (Access tất cả các feature của website)
+--- Subcriber (Upload image, comment, follow and like)
+
+-- `Requires`
+--- Dùng Mongodb để lưu các bài viết của Subscriber, các comment, hình và like
+--- Convert hình về base64 rồi lưu toàn bộ hình trong Mongod, không lưu thành file jpg hay png
+--- Dùng ajax auto-loading để load các bài mới khi kéo xuống dươi
+--- Đẩy project lên Heroku Server
+--- Design Responsive chạy được trên mobile
+--- Layout giống instagram 100%
+--- Không làm chức năng `Explore`
+--- Làm chức năng `Follow`, để khi user A follow user B, thì các bài viết của User A hiện trên User B
+--- Làm chức năng `Profile` để quản lý thtin tài khoản, đổi password, hiện các image mà User đã upload. Các thông tin của Profile giống Instagram `Name`, `Username`, `Website`, `Bio`, `Email`, `Gender`.
+--- Upload multiple-image, có slibar để coi các tấm hình khác.
+--- Click to view image, chức năng này giống FB.
+
+--`Options`
+--- Login/Sign-up bằng Social Account (Google, Facebook)
