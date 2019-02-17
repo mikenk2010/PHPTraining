@@ -59,7 +59,7 @@ Có Blur background để các action thay đổi ở page index.
 - Kết nối tới mongoDB, khi tạo một record mysql ở bảng Employee, thì lưu thông tin của Employee đó xuống MongoDB đồng tới cập nhật Mysql với MongoDB Key mới tạo
 
 ## Bài tập 9: 
-Xây dụng một website instagram, project name: `Khoiinsta`
+Xây dụng một website instagram, project name: `Khoiinsta` (New một repo mới)
 - Login 
 - Sign up
 - Add/edit/delete/view user
