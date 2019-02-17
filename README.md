@@ -54,3 +54,6 @@ Có Blur background để các action thay đổi ở page index.
 
 ## Bài tập 7: 
 - Deploy project lên AWS, để a tạo cho e account, rồi ssh key, rồi e access và upload project của mình lên đó
+
+## Bài 8: 
+- Kết nối tới mongoDB, khi tạo một record mysql ở bảng Employee, thì lưu thông tin của Employee đó xuống MongoDB đồng tới cập nhật Mysql với MongoDB Key mới tạo
